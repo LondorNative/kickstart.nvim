@@ -360,11 +360,6 @@ require('lazy').setup({
       vim.g.slime_bracketed_paste = 1
     end,
   },
-  {
-    'ThePrimeagen/harpoon',
-    branch = 'harpoon2',
-    requires = { { 'nvim-lua/plenary.nvim' } },
-  },
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -387,6 +382,42 @@ require('lazy').setup({
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
+      {
+        'ThePrimeagen/harpoon',
+        branch = 'harpoon2',
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        config = function()
+          local harpoon = require 'harpoon'
+          harpoon:setup()
+          vim.keymap.set('n', '<leader>a', function()
+            harpoon:list():add()
+          end)
+          vim.keymap.set('n', '<C-e>', function()
+            harpoon.ui:toggle_quick_menu(harpoon:list())
+          end)
+
+          vim.keymap.set('n', '<C-h>', function()
+            harpoon:list():select(1)
+          end)
+          vim.keymap.set('n', '<C-t>', function()
+            harpoon:list():select(2)
+          end)
+          vim.keymap.set('n', '<C-n>', function()
+            harpoon:list():select(3)
+          end)
+          vim.keymap.set('n', '<C-s>', function()
+            harpoon:list():select(4)
+          end)
+
+          -- Toggle previous & next buffers stored within Harpoon list
+          vim.keymap.set('n', '<C-S-P>', function()
+            harpoon:list():prev()
+          end)
+          vim.keymap.set('n', '<C-S-N>', function()
+            harpoon:list():next()
+          end)
+        end,
+      },
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
