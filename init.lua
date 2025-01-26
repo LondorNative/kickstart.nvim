@@ -242,6 +242,11 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'monkoose/parsley',
+  'monkoose/nvlime',
+  'mfussenegger/nvim-dap',
+  'mfussenegger/nvim-dap-python',
+  'microsoft/debugpy',
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -343,6 +348,23 @@ require('lazy').setup({
   -- you do for a plugin at the top level, you can do for a dependency.
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
+  {
+    'jpalardy/vim-slime',
+    keys = {
+      { '<leader>rc', '<cmd>SlimeConfig<cr>', desc = 'Slime Config' },
+      { '<leader>rr', '<Plug>SlimeSendCell<BAR>/^# %%<CR>', desc = 'Slime Send Cell' },
+    },
+    config = function()
+      vim.g.slime_target = 'neovim'
+      vim.g.slime_cell_delimiter = '# %%'
+      vim.g.slime_bracketed_paste = 1
+    end,
+  },
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    requires = { { 'nvim-lua/plenary.nvim' } },
+  },
 
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
@@ -619,7 +641,7 @@ require('lazy').setup({
       local servers = {
         clangd = {},
         gopls = {},
-        --pyright = {},
+        --pylsp =
         rust_analyzer = {
           on_attach = function(client, bufnr)
             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
